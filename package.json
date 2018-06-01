@@ -1,0 +1,15 @@
+{
+  "name": "ble-gateway",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Harry Brundage <harry.brundage@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "advlib": "https://github.com/airhorns/advlib.git",
+    "async": "^2.6.1",
+    "mqtt": "^2.18.0",
+    "noble": "^1.9.1",
+    "winston": "^3.0.0-rc6",
+    "xiaomi-gap-parser": "^1.0.2"
+  }
+}
