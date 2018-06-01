@@ -21,19 +21,17 @@ if (process.env.MQTT_URI) {
   process.exit(1)
 }
 
-const addresses = [
-  'ac:23:3f:a0:3b:16', // nRF5x aka S1
-  'ac:23:3f:a0:3b:05', // nRF5x aka S1
-  '4c:65:a8:d3:c8:36', // MJ_HT_V1 aka Xiaomi sensor
-  'f5:d5:b7:79:1a:b2', // SKYBEACON
-];
+let addresses;
+if (process.env.ADDRESS_WHITELIST) {
+  addresses = process.env.ADDRESS_WHITELIST.split(',');
+}
 
 function parseServiceData(uuid, data) {
-  const obj = { serviceData: { uuid: uuid, data: data }};
+  const obj = { serviceData: { uuid: uuid, data: data.toString('hex') }};
   advlib.ble.data.gatt.services.process(obj);
   if (uuid.toString('hex') === 'fe95') {
     obj.serviceData.xiaomi = XiaomiServiceReader.readServiceData(data);
-    }
+  }
   return obj;
 }
 
@@ -71,7 +69,7 @@ noble.on('stateChange', function(state) {
 noble.on('discover', function(peripheral) {
     var advertisement = peripheral.advertisement;
 
-    if(addresses.indexOf(peripheral.address) === -1) {
+    if(addresses && addresses.indexOf(peripheral.address) === -1) {
       return;
     }
 
@@ -83,7 +81,8 @@ noble.on('discover', function(peripheral) {
       for (let i in advertisement.serviceData) {
         var serviceData = advertisement.serviceData[i];
         if(serviceData) {
-          var parsed = parseServiceData(serviceData.uuid, serviceData.data.toString('hex'));
+          var parsed = parseServiceData(serviceData.uuid, serviceData.data);
+
           if (parsed.serviceData.minew) {
             publishData(peripheral, {
               device: 'Minew S1',
@@ -91,7 +90,15 @@ noble.on('discover', function(peripheral) {
               humidity: parsed.serviceData.minew.humidity,
               battery_percentage: parsed.serviceData.minew.batteryPercent,
             });
-          }
+          };
+
+          if (parsed.serviceData.xiaomi) {
+            publishData(peripheral, {
+              device: 'Xiaomi Mijia BTLE TH',
+              temperature: parsed.serviceData.xiaomi.event.tmp,
+              humidity: parsed.serviceData.xiaomi.hum
+            });
+          };
         }
       }
     }
