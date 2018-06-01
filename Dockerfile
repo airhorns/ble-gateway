@@ -1,6 +1,6 @@
 FROM resin/raspberry-pi-node
 RUN apt-get -y update
-RUN apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+RUN apt-get install -y libdbus-1-dev libdbus-glib-1-dev libglib2.0-dev libical-dev libreadline-dev libudev-dev libusb-dev glib2.0 bluetooth bluez libbluetooth-dev
 
 COPY package.json /package.json
 COPY yarn.lock /yarn.lock
