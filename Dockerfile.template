@@ -1,0 +1,9 @@
+FROM resin/%%RESIN_MACHINE_NAME%%-node
+RUN apt-get -y update
+RUN apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+
+COPY package.json /package.json
+RUN yarn install
+
+COPY scan.js /usr/src/app/scan.js
+CMD ["node", "/usr/src/app/scan.js"]

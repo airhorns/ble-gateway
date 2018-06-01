@@ -9,7 +9,7 @@ var XiaomiServiceReader = require('xiaomi-gap-parser');
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
-  transports: [new winston.transports.File({ filename: 'scan.log' })]
+  transports: [new winston.transports.Console()]
 });
 
 let mqttClient;
@@ -29,12 +29,6 @@ const addresses = [
   'f5:d5:b7:79:1a:b2', // SKYBEACON
 ];
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
-
 function parseServiceData(uuid, data) {
   const obj = { serviceData: { uuid: uuid, data: data }};
   advlib.ble.data.gatt.services.process(obj);
@@ -50,7 +44,7 @@ function publishData(peripheral, data) {
   mqttClient.publish("sensors/" + peripheral.address + "/txPowerLevel", peripheral.advertisement.txPowerLevel)
 
   for(let key in data) {
-    mqttClient.publish("sensors/" + peripheral.address + "/" + key, String(data[key]))
+    mqttClient.publish("sensors/" + peripheral.address + "/" + key, String(data[key]), (e) => { if(e) { logger.error("error publishing", e) }})
   }
 }
 
