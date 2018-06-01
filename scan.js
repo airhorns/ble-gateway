@@ -5,7 +5,6 @@ var advlib = require('advlib');
 var mqtt = require('mqtt');
 var XiaomiServiceReader = require('xiaomi-gap-parser');
 
-
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.json(),
@@ -40,11 +39,24 @@ function parseServiceData(uuid, data) {
 
 function publishData(peripheral, data) {
   logger.info("publish", Object.assign({mac: peripheral.address}, data))
-  mqttClient.publish("sensors/" + peripheral.address + "/local_name", peripheral.advertisement.localName)
-  mqttClient.publish("sensors/" + peripheral.address + "/txPowerLevel", peripheral.advertisement.txPowerLevel)
+  const callback = (e) => {
+    if(e) {
+      logger.error("error publishing", e);
+    }
+  };
+
+  mqttClient.publish("sensors/" + peripheral.address + "/ble-gateway", '1', {retain: true}, callback);
+  mqttClient.publish("sensors/" + peripheral.address + "/ble-gateway-uuid", process.env.RESIN_DEVICE_UUID, {retain: true}, callback);
+  mqttClient.publish("sensors/" + peripheral.address + "/local_name", peripheral.advertisement.localName, {retain: true}, callback);
+  mqttClient.publish("sensors/" + peripheral.address + "/transmission_power", peripheral.advertisement.txPowerLevel, {retain: true}, callback);
 
   for(let key in data) {
-    mqttClient.publish("sensors/" + peripheral.address + "/" + key, String(data[key]), (e) => { if(e) { logger.error("error publishing", e) }})
+    mqttClient.publish(
+      "sensors/" + peripheral.address + "/" + key,
+      String(data[key]),
+      {retain: true},
+      callback
+    );
   }
 }
 
