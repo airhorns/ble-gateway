@@ -1,6 +1,6 @@
-FROM resin/raspberry-pi-node
+FROM resin/raspberry-pi-node:8.11-slim
 RUN apt-get -y update
-RUN apt-get install -y libdbus-1-dev libdbus-glib-1-dev libglib2.0-dev libical-dev libreadline-dev libudev-dev libusb-dev glib2.0 bluetooth bluez libbluetooth-dev
+RUN apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
 
 COPY package.json /package.json
 COPY yarn.lock /yarn.lock
