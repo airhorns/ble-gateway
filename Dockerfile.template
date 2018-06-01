@@ -1,6 +1,6 @@
 FROM resin/%%RESIN_MACHINE_NAME%%-node:8.11-slim
 RUN apt-get -y update
-RUN apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+RUN apt-get install -y git bluetooth bluez libbluetooth-dev libudev-dev
 
 COPY package.json /package.json
 COPY yarn.lock /yarn.lock
