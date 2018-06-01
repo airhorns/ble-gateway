@@ -86,6 +86,7 @@ noble.on('discover', function(peripheral) {
           var parsed = parseServiceData(serviceData.uuid, serviceData.data.toString('hex'));
           if (parsed.serviceData.minew) {
             publishData(peripheral, {
+              device: 'Minew S1',
               temperature: parsed.serviceData.minew.temperature,
               humidity: parsed.serviceData.minew.humidity,
               battery_percentage: parsed.serviceData.minew.batteryPercent,
