@@ -47,6 +47,7 @@ function publishData(peripheral, data) {
   mqttClient.publish("sensors/" + peripheral.address + "/ble-gateway-uuid", process.env.RESIN_DEVICE_UUID, {retain: true}, callback);
   mqttClient.publish("sensors/" + peripheral.address + "/local_name", peripheral.advertisement.localName, {retain: true}, callback);
   mqttClient.publish("sensors/" + peripheral.address + "/transmission_power", peripheral.advertisement.txPowerLevel, {retain: true}, callback);
+  mqttClient.publish("sensors/" + peripheral.address + "/datetime", Date.now().toString(), {retain: true}, callback);
 
   for(let key in data) {
     mqttClient.publish(
