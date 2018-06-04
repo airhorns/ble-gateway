@@ -26,7 +26,7 @@ if (process.env.ADDRESS_WHITELIST) {
   addresses = process.env.ADDRESS_WHITELIST.split(',');
 }
 
-function parseServiceData(uuid, data) {
+function parseServiceDataBytes(uuid, data) {
   const obj = { serviceData: { uuid: uuid, data: data.toString('hex') }};
   advlib.ble.data.gatt.services.process(obj);
   if (uuid.toString('hex') === 'fe95') {
@@ -59,6 +59,27 @@ function publishData(peripheral, data) {
   }
 }
 
+function processServiceData(peripheral, serviceData) {
+  var parsed = parseServiceDataBytes(serviceData.uuid, serviceData.data);
+
+  if (parsed.serviceData.minew) {
+    publishData(peripheral, {
+      device: 'Minew S1',
+      temperature: parsed.serviceData.minew.temperature,
+      humidity: parsed.serviceData.minew.humidity,
+      battery_percentage: parsed.serviceData.minew.batteryPercent,
+    });
+  };
+
+  if (parsed.serviceData.xiaomi) {
+    publishData(peripheral, {
+      device: 'Xiaomi Mijia BTLE TH',
+      temperature: parsed.serviceData.xiaomi.event.tmp,
+      humidity: parsed.serviceData.xiaomi.event.hum
+    });
+  };
+}
+
 noble.on('stateChange', function(state) {
   if (state === 'poweredOn') {
     noble.startScanning([], true);
@@ -82,24 +103,7 @@ noble.on('discover', function(peripheral) {
       for (let i in advertisement.serviceData) {
         var serviceData = advertisement.serviceData[i];
         if(serviceData) {
-          var parsed = parseServiceData(serviceData.uuid, serviceData.data);
-
-          if (parsed.serviceData.minew) {
-            publishData(peripheral, {
-              device: 'Minew S1',
-              temperature: parsed.serviceData.minew.temperature,
-              humidity: parsed.serviceData.minew.humidity,
-              battery_percentage: parsed.serviceData.minew.batteryPercent,
-            });
-          };
-
-          if (parsed.serviceData.xiaomi) {
-            publishData(peripheral, {
-              device: 'Xiaomi Mijia BTLE TH',
-              temperature: parsed.serviceData.xiaomi.event.tmp,
-              humidity: parsed.serviceData.xiaomi.hum
-            });
-          };
+          processServiceData(peripheral, serviceData);
         }
       }
     }
