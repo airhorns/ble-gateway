@@ -4,11 +4,21 @@
   "main": "index.js",
   "author": "Harry Brundage <harry.brundage@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "build-ts": "tsc",
+    "watch-ts": "tsc -w",
+    "autolint": "tslint --fix --project ."
+  },
   "dependencies": {
+    "@types/mqtt": "^2.5.0",
+    "@types/noble": "^0.0.37",
+    "@types/winston": "^2.3.9",
     "advlib": "https://github.com/airhorns/advlib.git",
     "async": "^2.6.1",
     "mqtt": "^2.18.0",
     "noble": "^1.9.1",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.1",
     "winston": "^3.0.0-rc6",
     "xiaomi-gap-parser": "^1.0.2"
   }
