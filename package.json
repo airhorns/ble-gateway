@@ -1,13 +1,13 @@
 {
   "name": "ble-gateway",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "author": "Harry Brundage <harry.brundage@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-ts": "tsc",
-    "watch-ts": "tsc -w",
-    "autolint": "tslint --fix --project ."
+    "build-ts": "npx tsc",
+    "watch-ts": "npx tsc -w",
+    "autolint": "npx tslint --fix --project ."
   },
   "dependencies": {
     "@types/mqtt": "^2.5.0",
