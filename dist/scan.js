@@ -48,7 +48,9 @@ const publishData = (peripheral, data) => {
     mqttClient.publish("sensors/" + peripheral.address + "/transmission_power", String(peripheral.advertisement.txPowerLevel), publishOptions, callback);
     mqttClient.publish("sensors/" + peripheral.address + "/datetime", Date.now().toString(), publishOptions, callback);
     Object.keys(data).forEach((key) => {
-        mqttClient.publish("sensors/" + peripheral.address + "/" + key, String(data[key]), publishOptions, callback);
+        if (typeof data[key] !== "undefined") {
+            mqttClient.publish("sensors/" + peripheral.address + "/" + key, String(data[key]), publishOptions, callback);
+        }
     });
 };
 const processServiceData = (peripheral, serviceData) => {

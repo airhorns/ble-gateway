@@ -75,12 +75,14 @@ const publishData = (peripheral: noble.Peripheral, data: {[key: string]: any}) =
   mqttClient.publish("sensors/" + peripheral.address + "/datetime", Date.now().toString(), publishOptions, callback);
 
   Object.keys(data).forEach((key) => {
-    mqttClient.publish(
-      "sensors/" + peripheral.address + "/" + key,
-      String(data[key]),
-      publishOptions,
-      callback,
-    );
+    if (typeof data[key] !== "undefined") {
+      mqttClient.publish(
+        "sensors/" + peripheral.address + "/" + key,
+        String(data[key]),
+        publishOptions,
+        callback,
+      );
+    }
   });
 };
 
