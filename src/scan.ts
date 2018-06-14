@@ -20,6 +20,11 @@ if (process.env.MQTT_URI) {
   process.exit(1);
 }
 
+mqttClient.on("offline", () => {
+  logger.error("Disconnected from MQTT");
+  process.exit(1);
+});
+
 interface IParsedServiceData {
   uuid: string;
   data: string;
