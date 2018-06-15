@@ -21,5 +21,8 @@
     "typescript": "^2.9.1",
     "winston": "^3.0.0-rc6",
     "xiaomi-gap-parser": "^1.0.2"
+  },
+  "optionalDependencies": {
+    "bluetooth-hci-socket": "https://github.com/noble/node-bluetooth-hci-socket.git#916158269f7e48ddc73d2448d2634e91538c8991"
   }
 }

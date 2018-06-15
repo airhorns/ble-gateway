@@ -153,6 +153,16 @@ bluetooth-hci-socket@^0.5.1:
   optionalDependencies:
     usb "^1.1.0"
 
+"bluetooth-hci-socket@https://github.com/noble/node-bluetooth-hci-socket.git#916158269f7e48ddc73d2448d2634e91538c8991":
+  version "0.5.2"
+  resolved "https://github.com/noble/node-bluetooth-hci-socket.git#916158269f7e48ddc73d2448d2634e91538c8991"
+  dependencies:
+    debug "^2.2.0"
+    nan "^2.0.5"
+    node-pre-gyp "0.6.x"
+  optionalDependencies:
+    usb "^1.1.0"
+
 boom@2.x.x:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/boom/-/boom-2.10.1.tgz#39c8918ceff5799f83f9492a848f625add0c766f"
@@ -776,7 +786,7 @@ noble@^1.9.1:
     bplist-parser "0.0.6"
     xpc-connection "~0.1.4"
 
-node-pre-gyp@^0.6.30:
+node-pre-gyp@0.6.x, node-pre-gyp@^0.6.30:
   version "0.6.39"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.39.tgz#c00e96860b23c0e1420ac7befc5044e1d78d8649"
   dependencies:
