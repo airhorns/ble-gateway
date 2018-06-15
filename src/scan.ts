@@ -115,8 +115,11 @@ const processServiceData = (peripheral: noble.Peripheral, serviceData: any) => {
 noble.on("stateChange", (state) => {
   if (state === "poweredOn") {
     noble.startScanning([], true);
+    logger.info("BLE scanner powered on, scanning");
   } else {
     noble.stopScanning();
+    logger.error(`BLE scanner stateChange to ${state}, shutting down`);
+    process.exit(1);
   }
 });
 
