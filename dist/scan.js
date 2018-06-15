@@ -26,6 +26,10 @@ else {
     logger.error("No MQTT_URI ENV var specified");
     process.exit(1);
 }
+mqttClient.on("offline", () => {
+    logger.error("Disconnected from MQTT");
+    process.exit(1);
+});
 const parseServiceDataBytes = (uuid, data) => {
     const obj = { serviceData: { uuid, data: data.toString("hex") } };
     advlib.ble.data.gatt.services.process(obj);
@@ -74,9 +78,12 @@ const processServiceData = (peripheral, serviceData) => {
 noble.on("stateChange", (state) => {
     if (state === "poweredOn") {
         noble.startScanning([], true);
+        logger.info("BLE scanner powered on, scanning");
     }
     else {
         noble.stopScanning();
+        logger.error(`BLE scanner stateChange to ${state}, shutting down`);
+        process.exit(1);
     }
 });
 noble.on("discover", (peripheral) => {

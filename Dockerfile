@@ -12,4 +12,4 @@ RUN yarn install && \
     rm -rf /tmp/*
 
 ENV INITSYSTEM on
-CMD ["node", "/usr/src/app/dist/scan.js"]
+CMD ["node", "/usr/src/app/dist/timeout-if-no-output.js", "--timeout", "60000", "node", "dist/scan.js"]

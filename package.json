@@ -10,11 +10,13 @@
     "autolint": "npx tslint --fix --project ."
   },
   "dependencies": {
+    "@types/minimist": "^1.2.0",
     "@types/mqtt": "^2.5.0",
     "@types/noble": "^0.0.37",
     "@types/winston": "^2.3.9",
     "advlib": "https://github.com/airhorns/advlib.git",
     "async": "^2.6.1",
+    "minimist": "^1.2.0",
     "mqtt": "^2.18.0",
     "noble": "^1.9.1",
     "tslint": "^5.10.0",
