@@ -1,11 +1,10 @@
 FROM resin/%%RESIN_MACHINE_NAME%%-node:8.11-slim
-RUN apt-get -y update && apt-get install -y git bluetooth bluez libbluetooth-dev libudev-dev python make gcc g++ && apt-get clean
+RUN apt-get -y update && apt-get install -y git bluetooth bluez libbluetooth-dev libudev-dev python make gcc g++
 
 RUN npm install -g npm && npm install -g node-gyp@latest && npm install -g yarn && node -v && npm -v && yarn -v && node-gyp -v
 
 COPY . /usr/src/app
 WORKDIR /usr/src/app
-RUN yarn install && npm run build-ts
-
+RUN yarn install && npm run build-ts && apt-get remove python make gcc g++ git && apt-get clean && rm -rf /var/lib/apt/lists/*
 ENV INITSYSTEM on
 CMD ["node", "/usr/src/app/dist/scan.js"]
