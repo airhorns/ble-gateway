@@ -4,7 +4,7 @@ RUN apk add --no-cache \
     iputils ca-certificates && \
     update-ca-certificates
 
-ENV TELEGRAF_VERSION 1.3.1
+ENV TELEGRAF_VERSION 1.7.0
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps wget gnupg tar && \
@@ -26,6 +26,6 @@ RUN set -ex && \
     rm -rf *.tar.gz* /usr/src /root/.gnupg && \
     apk del .build-deps wget gnupg tar
 
-ENV INITSYSTEM=on
+ENV INITSYSTEM=off
 COPY telegraf.conf /etc/telegraf/telegraf.conf
 CMD touch /var/run/utmp && telegraf
