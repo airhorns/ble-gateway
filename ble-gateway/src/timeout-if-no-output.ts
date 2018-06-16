@@ -29,7 +29,6 @@ child.on("exit", (code) => {
 });
 
 setInterval(() => {
-  process.stdout.write(`watchdog: checking for hang diff: ${(new Date()).valueOf() - mostRecentTime.valueOf()}\n`);
   if (((new Date()).valueOf() - mostRecentTime.valueOf()) > timeout) {
     process.stderr.write(`No output received from subprocess in ${timeout}ms, quitting...`);
     child.kill("SIGINT");
