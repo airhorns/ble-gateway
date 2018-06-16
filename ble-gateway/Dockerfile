@@ -13,6 +13,6 @@ RUN apt-get update && \
     rm -rf /tmp/*
 
 COPY . /usr/src/app
-RUN ls -lA && npx tsc -v && npm run build-ts
+RUN ls -lA && node_modules/.bin/tsc -v && npm run build-ts
 
 CMD ["node", "/usr/src/app/dist/timeout-if-no-output.js", "--timeout", "60000", "node", "dist/scan.js"]

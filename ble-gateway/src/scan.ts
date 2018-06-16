@@ -112,16 +112,21 @@ const processServiceData = (peripheral: noble.Peripheral, serviceData: any) => {
   }
 };
 
-noble.on("stateChange", (state) => {
-  if (state === "poweredOn") {
-    noble.startScanning([], true);
-    logger.info("BLE scanner powered on, scanning");
-  } else {
-    noble.stopScanning();
-    logger.error(`BLE scanner stateChange to ${state}, shutting down`);
-    process.exit(1);
-  }
-});
+if (noble.state === "poweredOn") {
+  noble.startScanning([], true);
+  logger.info("BLE scanner was already powered on, scanning");
+} else {
+  noble.on("stateChange", (state) => {
+    if (state === "poweredOn") {
+      noble.startScanning([], true);
+      logger.info("BLE scanner powered on, scanning");
+    } else {
+      noble.stopScanning();
+      logger.error(`BLE scanner stateChange to ${state}, shutting down`);
+      process.exit(1);
+    }
+  });
+}
 
 noble.on("discover", (peripheral) => {
     // Skip apple
@@ -145,4 +150,8 @@ noble.on("discover", (peripheral) => {
     }
 });
 
-logger.info("boot scan");
+noble.on("warning", (message: string) => {
+  logger.warning("noble warning: " + message);
+});
+
+logger.info(`boot scan, adapter state: ${noble.state}`);

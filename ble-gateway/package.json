@@ -5,9 +5,9 @@
   "author": "Harry Brundage <harry.brundage@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build-ts": "npx tsc",
-    "watch-ts": "npx tsc -w",
-    "autolint": "npx tslint --fix --project ."
+    "build-ts": "node_modules/.bin/tsc",
+    "watch-ts": "node_modules/.bin/tsc -w",
+    "autolint": "node_modules/.bin/tslint --fix --project ."
   },
   "dependencies": {
     "@types/minimist": "^1.2.0",
@@ -19,6 +19,7 @@
     "minimist": "^1.2.0",
     "mqtt": "^2.18.0",
     "noble": "^1.9.1",
+    "ts-node": "^6.1.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
     "winston": "^3.0.0-rc6",
