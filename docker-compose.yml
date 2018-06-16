@@ -3,7 +3,7 @@ services:
 
   ble-gateway:
     build:
-      context: .
+      context: ./ble-gateway
     privileged: true
     restart: always
     network_mode: host
