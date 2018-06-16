@@ -26,6 +26,6 @@ RUN set -ex && \
     rm -rf *.tar.gz* /usr/src /root/.gnupg && \
     apk del .build-deps wget gnupg tar
 
-ENV INITSYSTEM=off
+ENV INITSYSTEM=on
 COPY telegraf.conf /etc/telegraf/telegraf.conf
 CMD touch /var/run/utmp && telegraf
