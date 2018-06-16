@@ -15,7 +15,7 @@ const minimist_1 = __importDefault(require("minimist"));
 const argv = minimist_1.default(process.argv.slice(2), {
     string: ["timeout"],
     alias: { t: "timeout" },
-    stopEarly: true
+    stopEarly: true,
 });
 const timeout = parseInt(argv.timeout, 10);
 const command = argv._[0];
@@ -35,8 +35,10 @@ child.on("exit", (code) => {
     process.exit(code);
 });
 setInterval(() => {
+    process.stdout.write(`watchdog: checking for hang diff: ${(new Date()).valueOf() - mostRecentTime.valueOf()}\n`);
     if (((new Date()).valueOf() - mostRecentTime.valueOf()) > timeout) {
         process.stderr.write(`No output received from subprocess in ${timeout}ms, quitting...`);
+        child.kill("SIGINT");
         process.exit(1);
     }
 }, timeout / 3);

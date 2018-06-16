@@ -4,7 +4,7 @@ import parseArgs from "minimist";
 const argv = parseArgs(process.argv.slice(2), {
   string: ["timeout"],
   alias: { t: "timeout"},
-  stopEarly: true
+  stopEarly: true,
 });
 
 const timeout = parseInt(argv.timeout, 10);
@@ -29,6 +29,7 @@ child.on("exit", (code) => {
 });
 
 setInterval(() => {
+  process.stdout.write(`watchdog: checking for hang diff: ${(new Date()).valueOf() - mostRecentTime.valueOf()}\n`);
   if (((new Date()).valueOf() - mostRecentTime.valueOf()) > timeout) {
     process.stderr.write(`No output received from subprocess in ${timeout}ms, quitting...`);
     child.kill("SIGINT");
