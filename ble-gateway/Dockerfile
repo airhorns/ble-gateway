@@ -15,5 +15,4 @@ RUN apt-get update && \
 COPY . /usr/src/app
 RUN ls -lA && npx tsc -v && npm run build-ts
 
-ENV INITSYSTEM on
 CMD ["node", "/usr/src/app/dist/timeout-if-no-output.js", "--timeout", "60000", "node", "dist/scan.js"]
