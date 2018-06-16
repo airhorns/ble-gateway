@@ -1,29 +1,19 @@
 version: '2.1'
-networks: {}
-volumes:
-  resin-data: {}
 services:
-  main:
+
+  ble-gateway:
     build:
       context: .
     privileged: true
     restart: always
     network_mode: host
-    volumes:
-      - 'resin-data:/data'
-    labels:
-      io.resin.features.kernel-modules: '1'
-      io.resin.features.firmware: '1'
-      io.resin.features.dbus: '1'
-      io.resin.features.supervisor-api: '1'
-      io.resin.features.resin-api: '1'
-      io.resin.update.strategy: download-then-kill
-      io.resin.update.handover-timeout:
+
   metrics:
     build: ./metrics
-    pid: "host"
+    pid: host
     privileged: true
-    network_mode: "host"
+    network_mode: host
     restart: always
     labels:
       io.resin.features.balena-socket: '1'
+      io.resin.features.dbus: '1'
