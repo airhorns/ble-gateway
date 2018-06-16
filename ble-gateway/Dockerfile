@@ -2,6 +2,7 @@ FROM resin/raspberry-pi-node:8.11-slim
 
 COPY package.json /usr/src/app/package.json
 COPY yarn.lock /usr/src/app/yarn.lock
+WORKDIR /usr/src/app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git bluetooth bluez libbluetooth-dev libudev-dev python build-essential jq && \
@@ -12,9 +13,7 @@ RUN apt-get update && \
     rm -rf /tmp/*
 
 COPY . /usr/src/app
-WORKDIR /usr/src/app
-
-RUN npm run build-ts
+RUN ls -lA && npx tsc -v && npm run build-ts
 
 ENV INITSYSTEM on
 CMD ["node", "/usr/src/app/dist/timeout-if-no-output.js", "--timeout", "60000", "node", "dist/scan.js"]
