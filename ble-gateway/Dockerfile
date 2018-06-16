@@ -5,7 +5,7 @@ COPY yarn.lock /usr/src/app/yarn.lock
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git bluetooth bluez libbluetooth-dev libudev-dev python build-essential jq && \
-    npm install -g yarn node-gyp && node -v && npm -v && yarn -v && node-gyp -v && \
+    npm install -g npm yarn node-gyp && node -v && npm -v && yarn -v && node-gyp -v && \
     yarn && \
     apt-get remove python build-essential jq && apt-get autoremove && apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
