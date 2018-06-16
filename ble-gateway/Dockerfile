@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends git bluetooth bluez libbluetooth-dev libudev-dev python build-essential jq && \
     npm install -g yarn node-gyp && node -v && npm -v && yarn -v && node-gyp -v && \
     yarn add $(cat /usr/src/app/package.json | jq -r '.optionalDependencies["bluetooth-hci-socket"]') && \
-    apt-get remove python build-essential jq && apt-get clean && \
+    apt-get remove python build-essential jq && apt-get autoremove && apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /tmp/*
 
