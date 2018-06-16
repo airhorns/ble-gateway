@@ -31,6 +31,7 @@ child.on("exit", (code) => {
 setInterval(() => {
   if (((new Date()).valueOf() - mostRecentTime.valueOf()) > timeout) {
     process.stderr.write(`No output received from subprocess in ${timeout}ms, quitting...`);
+    child.kill("SIGINT");
     process.exit(1);
   }
 }, timeout / 3);
