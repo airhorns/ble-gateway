@@ -1,8 +1,9 @@
 import * as winston from "winston";
 import * as mqtt from "mqtt";
-import * as advlib from "advlib";
+import advlib from "advlib";
 import * as XiaomiServiceReader from "xiaomi-gap-parser";
 import noble = require("noble");
+import * as skybeacon from "./skybeacon";
 
 const logger = winston.createLogger({
   level: "info",
@@ -52,11 +53,20 @@ interface IParsedServiceData {
     humidity: number;
     macAddress: string;
   };
+  skybeacon?: {
+    temperature?: number;
+    humidity?: number;
+    model: string;
+  };
 }
 
 const parseServiceDataBytes = (uuid: string, data: Buffer) => {
   const obj: {serviceData: IParsedServiceData}  = { serviceData: { uuid, data: data.toString("hex") }};
   advlib.ble.data.gatt.services.process(obj);
+
+  if (skybeacon.isSkybeaconData(obj.serviceData)) {
+    obj.serviceData.skybeacon = skybeacon.parseSkybeaconServiceData(obj.serviceData.data);
+  }
 
   if (uuid === "fe95") {
     obj.serviceData.xiaomi = XiaomiServiceReader.readServiceData(data);
@@ -110,6 +120,15 @@ const processServiceData = (peripheral: noble.Peripheral, serviceData: any) => {
       humidity: parsed.serviceData.xiaomi.event.data.hum,
     });
   }
+
+  if (parsed.serviceData.skybeacon) {
+    publishData(peripheral, {
+      device: "SKYBEACON 1",
+      temperature: parsed.serviceData.skybeacon.temperature,
+      humidity: parsed.serviceData.skybeacon.humidity,
+    });
+  }
+
 };
 
 if (noble.state === "poweredOn") {
