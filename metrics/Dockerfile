@@ -4,6 +4,8 @@ RUN apk add --no-cache \
     iputils ca-certificates && \
     update-ca-certificates
 
+RUN apk add --no-cache lm_sensors lm_sensors-detect
+
 ENV TELEGRAF_VERSION 1.7.0
 
 RUN set -ex && \

@@ -79,7 +79,7 @@ noble.on("discover", (peripheral) => {
 
     // Skip unknown macs
     const mac = peripheral.address;
-    const macs = ["f5:d5:b7:79:1a:b2", "ff:ac:3c:7e:36:fb"];
+    // const macs = ["f5:d5:b7:79:1a:b2", "ff:ac:3c:7e:36:fb"];
     // if (macs.indexOf(mac) === -1) {
     //   return;
     // }
